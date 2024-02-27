@@ -1,0 +1,5 @@
+<div *ngFor="let type of typeList">
+  <img [src]="type.assetPath" [alt]="type.name" />
+  <p>{{ type.name }}</p>
+  <p>{{ type.url }}</p>
+</div>
