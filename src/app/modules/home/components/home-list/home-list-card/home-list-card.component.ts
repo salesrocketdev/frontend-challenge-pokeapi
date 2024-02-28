@@ -17,7 +17,7 @@ export class HomeListCardComponent {
 
   @Output() navigateToTypeEvent = new EventEmitter();
 
-  public navigateToType(type: string) {
+  protected navigateToType(type: string) {
     this.navigateToTypeEvent.emit(type);
   }
 }

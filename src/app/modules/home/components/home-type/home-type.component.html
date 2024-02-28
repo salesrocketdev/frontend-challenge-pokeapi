@@ -89,7 +89,7 @@
       </button>
     </ng-template>
 
-    <div class="text-end">
+    <div *ngIf="pokemonList.pokemon.length > 0" class="text-end">
       <span class="text-sm text-gray-700 dark:text-gray-400">
         Showing
         <span class="font-semibold text-gray-500">{{ pageSize }}</span> of

@@ -196,7 +196,7 @@ export class HomeListComponent implements OnInit {
       });
   }
 
-  public navigateToType(type: string) {
+  protected navigateToType(type: string) {
     this.router.navigate(['home', 'pokemon-type', type]);
   }
 }
