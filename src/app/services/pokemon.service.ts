@@ -13,7 +13,7 @@ export class PokemonService extends BaseService {
   }
 
   public getAllTypes(): Observable<Result<PokemonType>> {
-    const url = this.getAppSettings() + 'type';
+    const url = `${this.getApiUrl()}type`;
 
     return this.http.get(url, { headers: this.getHeaders() }).pipe(
       map((res: any) => {
@@ -22,12 +22,19 @@ export class PokemonService extends BaseService {
     );
   }
 
-  public getByType(type: string): Observable<PokemonList[]> {
-    const url = this.getAppSettings() + `type/${type}?limit=10&offset=10`;
+  public getByType(type: string): Observable<Result<PokemonList>> {
+    const url = `${this.getApiUrl()}type/${type}`;
 
     return this.http.get(url, { headers: this.getHeaders() }).pipe(
       map((res: any) => {
-        return res;
+        const result: Result<PokemonList> = {
+          count: res.pokemon.length,
+          next: null,
+          previous: null,
+          results: res.pokemon,
+        };
+
+        return result;
       })
     );
   }

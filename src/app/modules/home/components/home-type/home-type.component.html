@@ -1,1 +1,139 @@
-<p>home-type works!</p>
+<ng-container *ngIf="isLoading; else content">
+  <app-loading></app-loading>
+</ng-container>
+
+<ng-template #content>
+  <section
+    class="container relative flex flex-col justify-between h-full max-w-6xl px-6 mx-auto xl:px-0 mt-5"
+  >
+    <div class="flex flex-row justify-between items-center mb-4">
+      <nav class="flex py-2 text-gray-700 rounded-lg" aria-label="Breadcrumb">
+        <ol
+          class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse"
+        >
+          <li class="inline-flex items-center">
+            <p
+              class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400"
+            >
+              <svg
+                class="w-3 h-3 me-2.5"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z"
+                />
+              </svg>
+              Home
+            </p>
+          </li>
+
+          <li>
+            <div class="flex items-center">
+              <svg
+                class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 6 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 9 4-4-4-4"
+                />
+              </svg>
+              <p
+                class="ms-1 text-sm font-medium text-gray-700 dark:text-gray-400"
+              >
+                {{ type | titlecase }}
+              </p>
+            </div>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <ng-container *ngIf="pokemonList.pokemon.length > 0; else emptyMessage">
+      <h2 class="mb-1 text-2xl font-extrabold leading-tight text-gray-900">
+        Pokémon List
+      </h2>
+
+      <p class="mb-4 text-lg text-gray-500">
+        Discover various <strong>{{ type }}</strong> type Pokémon.
+      </p>
+    </ng-container>
+
+    <ng-template #emptyMessage>
+      <h2 class="mb-1 text-2xl font-extrabold leading-tight text-gray-900">
+        Sorry
+      </h2>
+
+      <p
+        class="mb-4 text-lg text-gray-500"
+        *ngIf="pokemonList.pokemon.length === 0"
+      >
+        There are no Pokémon of type <strong>{{ type }}</strong> available.
+      </p>
+
+      <button
+        (click)="navigateToHome()"
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Go back
+      </button>
+    </ng-template>
+
+    <div class="text-end">
+      <span class="text-sm text-gray-700 dark:text-gray-400">
+        Showing
+        <span class="font-semibold text-gray-500">{{ pageSize }}</span> of
+        <span class="font-semibold text-gray-500">
+          {{ pokemonList.pokemon.length }}
+        </span>
+        Entries
+      </span>
+    </div>
+
+    <div
+      *ngIf="pokemonList.pokemon.length > 0"
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
+      <div *ngFor="let pokemon of paginatedItems" class="p-2 max-w-md">
+        <app-home-type-card [type]="type" [pokemon]="pokemon" />
+      </div>
+    </div>
+
+    <section
+      *ngIf="pokemonList.pokemon.length > 0"
+      class="flex items-center justify-center space-x-4 mt-4 mb-4"
+    >
+      <button
+        [class]="currentPage === 1 ? 'btn text-gray-500' : 'btn text-blue-500'"
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)"
+      >
+        Previous
+      </button>
+
+      <span class="text-md font-bold">Page {{ currentPage }}</span>
+
+      <button
+        [class]="
+          currentPage * pageSize >= pokemonList.pokemon.length
+            ? 'btn text-gray-500'
+            : 'btn text-blue-500'
+        "
+        [disabled]="currentPage * pageSize >= pokemonList.pokemon.length"
+        (click)="onPageChange(currentPage + 1)"
+      >
+        Next
+      </button>
+    </section>
+  </section>
+</ng-template>

@@ -1,5 +1,27 @@
-<div *ngFor="let type of typeList">
-  <img [src]="type.assetPath" [alt]="type.name" />
-  <p>{{ type.name }}</p>
-  <p>{{ type.url }}</p>
-</div>
+<ng-container *ngIf="isLoading; else content">
+  <app-loading></app-loading>
+</ng-container>
+
+<ng-template #content>
+  <section
+    class="container relative flex flex-col justify-between h-full max-w-6xl px-6 mx-auto xl:px-0 mt-5"
+  >
+    <h2 class="mb-1 text-2xl font-extrabold leading-tight text-gray-900">
+      Pokémon Types
+    </h2>
+    <p class="mb-4 text-lg text-gray-500">
+      Discover various Pokémon types and their unique traits.
+    </p>
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
+      <div *ngFor="let type of typeList" class="p-2 max-w-sm">
+        <app-home-list-card
+          [type]="type"
+          (navigateToTypeEvent)="navigateToType($event)"
+        />
+      </div>
+    </div>
+  </section>
+</ng-template>

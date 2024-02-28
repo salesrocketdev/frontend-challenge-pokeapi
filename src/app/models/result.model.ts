@@ -1,7 +1,7 @@
 interface Result<T> {
   count: number;
-  next: number;
-  previous: number;
+  next: string | null;
+  previous: string | null;
   results: T[];
 }
 
